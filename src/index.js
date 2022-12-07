@@ -2,22 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import Clients from './components/clients/Clients';
-import Employees from './components/employees/Employees';
-import Offers from './components/offers/Offers';
-import Sales from './components/sales/Sales';
-import Teams from './components/teams/Teams';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-    <Clients />
-    <Employees />
-    <Offers />
-    <Sales />
-    <Teams />
   </React.StrictMode>
 );
 
