@@ -1,8 +1,8 @@
-import './Sales.css';
-
 function Sales() {
   return (
-    <div>Sales</div>
+    <div>
+      <h3 className="text-3xl font-medium text-gray-700">Sales</h3>
+    </div>
   );
 }
 

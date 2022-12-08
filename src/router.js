@@ -6,6 +6,7 @@ import Employees from "./components/employees/Employees";
 import Offers from "./components/offers/Offers";
 import Sales from "./components/sales/Sales";
 import Teams from "./components/teams/Teams";
+import UIComponents from "./components/template/components";
 
 
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
             {
                 path: "teams",
                 element: <Teams />,
+            },
+            {
+                path: "components",
+                element: <UIComponents />,
             },
         ]
     },

@@ -1,8 +1,8 @@
-import './Employees.css';
-
 function Employees() {
   return (
-    <div>Employees</div>
+    <div>
+      <h3 className="text-3xl font-medium text-gray-700">Employees</h3>
+    </div>
   );
 }
 
