@@ -1,23 +1,22 @@
-import { NavLink, Outlet} from "react-router-dom";
+import { Outlet} from "react-router-dom";
+import Header from "../components/common/header";
+import Sidebar from "../components/common/sidebar";
 
 export default function Root() {
     return (
         <>
-            <div id="sidebar">
-                <h1>Sales App</h1>
-                <nav>
-                    <ul>
-                        <NavLink to={`clients/`}>Clients</NavLink>
-                        <NavLink to={`employees/`}>Employees</NavLink>
-                        <NavLink to={`sales/`}>Sales</NavLink>
-                        <NavLink to={`offers/`}>Offers</NavLink>
-                        <NavLink to={`teams/`}>Teams</NavLink>
-                    </ul>
-                </nav>
+        <div className="flex h-screen bg-gray-200 font-roboto">
+            <Sidebar />
+
+            <div className="flex-1 flex flex-col overflow-hidden">
+                <Header />
+                <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
+                    <div id="detail" className="container mx-auto px-6 py-8">
+                        <Outlet />
+                    </div>
+                </main>
             </div>
-            <div id="detail">
-                <Outlet />
-            </div>
+        </div>
         </>
     );
 }
