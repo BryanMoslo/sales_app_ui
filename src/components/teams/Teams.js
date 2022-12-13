@@ -1,4 +1,4 @@
-import Table from "../template/table";
+import Table from "../common/table";
 import {useState, useEffect} from "react";
 
 
