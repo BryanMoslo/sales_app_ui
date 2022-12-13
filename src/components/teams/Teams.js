@@ -1,7 +1,7 @@
 import Table from "../common/table";
+
 import {useState, useEffect} from "react";
 import {Link } from "react-router-dom";
-
 
 function Teams() {
     const [teams, setTeams] = useState([]);
@@ -22,6 +22,7 @@ function Teams() {
     <div>
       <h3 className="text-3xl font-medium text-gray-700">Teams</h3>
 
+
         <div className="mt-4">
             <div className="flex px-4 py-4 space-x-4 overflow-x-auto rounded-md">
                 <Link to="/teams/create">
@@ -31,6 +32,7 @@ function Teams() {
                 </Link>
             </div>
         </div>
+
 
         {isLoading ? (
             <div>Loading...</div>
