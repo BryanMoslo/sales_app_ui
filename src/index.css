@@ -178,6 +178,14 @@ select {
  outline:1px auto -webkit-focus-ring-color
 }
 
+button[role="combobox"] + label {
+    @apply hidden;
+    height: 2.75rem;
+}
+button[role="combobox"] {
+    font-size: 1rem;
+}
+
 @import"https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap";
 
 @tailwind base;
