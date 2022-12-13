@@ -17,26 +17,35 @@ function Teams() {
             })
     }, []);
 
+    function industryColor(industry) {
+        switch (industry) {
+            case "health":
+                return "text-green-800 bg-green-100";
+            case "insurance":
+                return "text-yellow-800 bg-yellow-100";
+            case "entertainment":
+                return "text-blue-800 bg-blue-100";
+            default:
+                return "text-gray-800 bg-gray-100";
+        }
+    }
 
     return (
     <div>
-      <h3 className="text-3xl font-medium text-gray-700">Teams</h3>
+        <div className="mt-4 flex justify-between">
+            <h3 className="text-3xl font-medium text-gray-700">Teams</h3>
 
-
-        <div className="mt-4">
-            <div className="flex px-4 py-4 space-x-4 overflow-x-auto rounded-md">
-                <Link to="/teams/create">
-                    <button className="px-4 py-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500">
-                        Create a Team
-                    </button>
-                </Link>
-            </div>
+            <Link to="/teams/create">
+                <button className="px-4 py-2 font-medium tracking-wide text-white transition-colors duration-200 transform bg-indigo-600 rounded-md hover:bg-indigo-500 focus:outline-none focus:bg-indigo-500">
+                    Create a Team
+                </button>
+            </Link>
         </div>
 
 
         {isLoading ? (
             <div>Loading...</div>
-        ) : <Table title={'Team List'} columns={['ID','Name', 'Industry']}>
+        ) : <Table title={'Team List'} columns={['#','Name', 'Industry']}>
             <>
                 {teams.map((team, i) => (
                     <tr key={team.id}>
@@ -47,27 +56,25 @@ function Teams() {
                         </td>
 
                         <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
-                            <div className="ml-4">
-                                <div className="text-sm leading-5 text-gray-900">
-                                    {team?.name ? team?.name : '-'}
-                                </div>
+                            <div className="text-sm leading-5 text-gray-900">
+                                {team?.name ? team?.name : '-'}
                             </div>
                         </td>
 
                         <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
-                            <div className="text-sm leading-5 text-gray-900">
+                            <span className={`capitalize inline-flex px-2 text-xs font-semibold leading-5 ${industryColor(team.industry)} rounded-full`}>
                                 {team?.industry ? team.industry : '-'}
-                            </div>
+                            </span>
                         </td>
 
 
                         <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
-                            <a href="google.com" className="text-indigo-600 hover:text-indigo-900">Delete</a>
+                            <a href="google.com" className="text-red-600 hover:text-red-900">Delete</a>
                         </td>
                     </tr>
                 ))}
             </>
-        < /Table>}
+        </Table>}
     </div>
   );
 }
