@@ -1,6 +1,7 @@
 import React from "react";
 import { Select, Option } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 function CreateATeam () {
 
@@ -9,6 +10,7 @@ function CreateATeam () {
     const [values, setValues] = React.useState({
       name: '',
     });
+    const navigate = useNavigate();
 
     useEffect(() => {
         const requestOptions = {
@@ -25,6 +27,7 @@ function CreateATeam () {
                 return response.json()
             })
             .catch(err => { console.log(err)}); 
+            navigate('/teams')
         }
     }, [sentForm]);
 
@@ -32,8 +35,6 @@ function CreateATeam () {
     function handleInputChange(event) {
         const { target } = event;
         const { name, value} = target;
-
-
         const newValues = {
           ...values,
           [name]: value,
@@ -81,9 +82,11 @@ function CreateATeam () {
                         </div>
                     </div>
                     <div className="flex justify-end mt-4">
+
                             <button className="px-4 py-2 text-gray-200 bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
                                 Save
                             </button>
+
                     </div>
                 </form>
             </div>

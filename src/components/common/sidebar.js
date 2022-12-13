@@ -34,7 +34,10 @@ function Sidebar(){
                 </div>
 
                 <nav className="mt-10">
-                    <NavLink to={`clients/`} className="flex items-center px-6 py-2 mt-4 duration-200 border-l-4 bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100 router-link-active router-link-exact-active">
+                    <NavLink 
+                        to={`clients/`} 
+                        className={({ isActive }) => (isActive ? 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100 router-link-active router-link-exact-active' : 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100')}
+                    >
                         <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                             d="M2 10C2 5.58172 5.58172 2 10 2V10H18C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10Z"
@@ -48,7 +51,10 @@ function Sidebar(){
                         <span className="mx-4">Clients</span>
                     </NavLink>
 
-                    <NavLink to={`offers/`} className="flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100">
+                    <NavLink 
+                        to={`offers/`} 
+                        className={({ isActive }) => (isActive ? 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100 router-link-active router-link-exact-active' : 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100')}
+                    >
                         <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                             d="M2 10C2 5.58172 5.58172 2 10 2V10H18C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10Z"
@@ -62,7 +68,10 @@ function Sidebar(){
                         <span className="mx-4">Offers</span>
                     </NavLink>
 
-                    <NavLink to={`sales/`} className="flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100">
+                    <NavLink 
+                        to={`sales/`} 
+                        className={({ isActive }) => (isActive ? 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100 router-link-active router-link-exact-active' : 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100')}
+                    >
                         <svg className="w-5 h-5" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                             d="M2 10C2 5.58172 5.58172 2 10 2V10H18C18 14.4183 14.4183 18 10 18C5.58172 18 2 14.4183 2 10Z"
@@ -76,7 +85,10 @@ function Sidebar(){
                         <span className="mx-4">Sales</span>
                     </NavLink>
 
-                    <NavLink to={`employees/`} className="flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100">
+                    <NavLink 
+                        to={`employees/`}
+                        className={({ isActive }) => (isActive ? 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100 router-link-active router-link-exact-active' : 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100')}
+                    >
                         <svg
                             className="w-5 h-5"
                             viewBox="0 0 20 20"
@@ -104,7 +116,10 @@ function Sidebar(){
                         <span className="mx-4">Employees</span>
                     </NavLink>
 
-                    <NavLink to={`teams/`} className="flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100">
+                    <NavLink 
+                        to={`teams/`}
+                        className={({ isActive }) => (isActive ? 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 bg-gray-600 bg-opacity-25 text-gray-100 border-gray-100 router-link-active router-link-exact-active' : 'flex items-center px-6 py-2 mt-4 duration-200 border-l-4 border-gray-900 text-gray-500 hover:bg-gray-600 hover:bg-opacity-25 hover:text-gray-100')}
+                    >
                         <svg
                             className="w-5 h-5"
                             viewBox="0 0 20 20"
