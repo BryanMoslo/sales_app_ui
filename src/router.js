@@ -7,6 +7,7 @@ import Offers from "./components/offers/Offers";
 import Sales from "./components/sales/Sales";
 import Teams from "./components/teams/Teams";
 import UIComponents from "./components/template/components";
+import CreateATeam from "./components/teams/create";
 
 
 const router = createBrowserRouter([
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
             {
                 path: "teams",
                 element: <Teams />,
+            },
+            {
+                path: "teams/create",
+                element: <CreateATeam />,
             },
             {
                 path: "components",
