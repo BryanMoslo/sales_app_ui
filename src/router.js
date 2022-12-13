@@ -6,6 +6,7 @@ import Employees from "./components/employees/Employees";
 import Offers from "./components/offers/Offers";
 import Sales from "./components/sales/Sales";
 import Teams from "./components/teams/Teams";
+import Team from "./components/teams/Team";
 import UIComponents from "./components/template/components";
 
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path: "components",
                 element: <UIComponents />,
+            },
+            {
+                path: "teams/:teamsId",
+                element: <Team />,
             },
         ]
     },
