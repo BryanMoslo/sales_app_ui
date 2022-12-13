@@ -6,8 +6,9 @@ import Employees from "./components/employees/Employees";
 import Offers from "./components/offers/Offers";
 import Sales from "./components/sales/Sales";
 import Teams from "./components/teams/Teams";
-import Team from "./components/teams/Team";
+import TeamView from "./components/teams/TeamView";
 import UIComponents from "./components/template/components";
+import CreateATeam from "./components/teams/create";
 
 
 const router = createBrowserRouter([
@@ -37,12 +38,16 @@ const router = createBrowserRouter([
                 element: <Teams />,
             },
             {
+                path: "teams/create",
+                element: <CreateATeam />,
+            },
+            {
                 path: "components",
                 element: <UIComponents />,
             },
             {
-                path: "teams/:teamsId",
-                element: <Team />,
+                path: "teams/:teamId",
+                element: <TeamView />,
             },
         ]
     },
