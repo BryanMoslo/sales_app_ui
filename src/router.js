@@ -5,11 +5,10 @@ import Clients from "./components/clients/Clients";
 import Employees from "./components/employees/Employees";
 import Offers from "./components/offers/Offers";
 import Sales from "./components/sales/Sales";
-import Teams from "./components/teams/Teams";
-import TeamView from "./components/teams/TeamView";
+import Teams from "./components/teams/List";
+import TeamView from "./components/teams/Show";
+import CreateATeam from "./components/teams/Create";
 import UIComponents from "./components/template/components";
-import CreateATeam from "./components/teams/create";
-
 
 const router = createBrowserRouter([
     {

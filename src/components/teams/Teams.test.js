@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import Teams from './Teams';
+import Teams from './List';
 
 test('renders learn react link', () => {
   render(<Teams />);

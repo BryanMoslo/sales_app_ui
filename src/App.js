@@ -3,7 +3,7 @@ import Clients from './components/clients/Clients';
 import Employees from './components/employees/Employees';
 import Offers from './components/offers/Offers';
 import Sales from './components/sales/Sales';
-import Teams from './components/teams/Teams';
+import Teams from './components/teams/List';
 
 function App() {
   return (
