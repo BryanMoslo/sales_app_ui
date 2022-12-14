@@ -1,12 +1,10 @@
 import Table from "../common/table";
-
 import {useState, useEffect} from "react";
 import {Link } from "react-router-dom";
 
 function Teams() {
     const [teams, setTeams] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-
 
     useEffect(() => {
         fetch(`http://localhost:3000/teams/`)
@@ -51,7 +49,7 @@ function Teams() {
                     <tr key={team.id}>
                         <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                             <div className="text-sm leading-5 text-gray-900">
-                                {i+1}
+                                <Link to={`${team.id}`}>{i+1}</Link>
                             </div>
                         </td>
 
@@ -69,6 +67,7 @@ function Teams() {
 
 
                         <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
+                            <Link to={`${team.id}`} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
                             <a href="google.com" className="text-red-600 hover:text-red-900">Delete</a>
                         </td>
                     </tr>
