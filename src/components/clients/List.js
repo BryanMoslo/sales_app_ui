@@ -2,7 +2,7 @@ import Table from "../common/table";
 import {useState, useEffect} from "react";
 import List from "../common/list";
 
-function Clients() {
+function ClientsList() {
     const baseUrl = 'http://localhost:3000/clients/';
     const [clients, setClients] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -60,4 +60,4 @@ function Clients() {
   );
 }
 
-export default Clients;
+export default ClientsList;
