@@ -18,8 +18,8 @@ function TeamView() {
     return (
         <div> 
             <h3 className="text-3xl font-medium text-gray-700">Teams</h3>
-            <div class="mt-8">
-                <h4 class="text-gray-600">Member</h4>
+            <div className="mt-8">
+                <h4 className="text-gray-600">Member</h4>
                 <p>Name: {team.name}</p>
                 <p>Industry: {team.industry}</p>
             </div>            
