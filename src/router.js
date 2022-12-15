@@ -9,6 +9,7 @@ import Teams from "./components/teams/List";
 import TeamView from "./components/teams/Show";
 import CreateATeam from "./components/teams/Create";
 import UIComponents from "./components/template/components";
+import Create from "./components/clients/Create";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
             {
                 path: "clients",
                 element: <Clients />,
+            },
+            {
+                path: "clients/create",
+                element: <Create />,
             },
             {
                 path: "employees",
