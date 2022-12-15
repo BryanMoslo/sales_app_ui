@@ -1,7 +1,7 @@
 import {createBrowserRouter} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
-import Clients from "./components/clients/Clients";
+import ClientsList from "./components/clients/List";
 import Employees from "./components/employees/Employees";
 import Offers from "./components/offers/Offers";
 import Sales from "./components/sales/Sales";
@@ -10,6 +10,7 @@ import TeamView from "./components/teams/Show";
 import CreateATeam from "./components/teams/Create";
 import UIComponents from "./components/template/components";
 import Create from "./components/clients/Create";
+import List from "./components/common/list";
 
 const router = createBrowserRouter([
     {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "clients",
-                element: <Clients />,
+                element: <ClientsList />,
             },
             {
                 path: "clients/create",
