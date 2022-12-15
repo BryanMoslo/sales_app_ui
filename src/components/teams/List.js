@@ -3,17 +3,61 @@ import {useState, useEffect} from "react";
 import {Link } from "react-router-dom";
 
 function Teams() {
+    const baseUrl = 'http://localhost:3000/teams/';
     const [teams, setTeams] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [currentDeleted, setCurrentDeleted] = useState('')
+
+    const deletingClass = 'opacity-20'
 
     useEffect(() => {
-        fetch(`http://localhost:3000/teams/`)
+        fetch(`${baseUrl}`)
             .then(res => res.json())
             .then(({data}) => {
                 setIsLoading(false)
-                setTeams(data)
+                setTeams([...teams, ...data])
             })
     }, []);
+
+
+
+   useEffect(() => {
+        let ignore = false;
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        if (!ignore && currentDeleted !== '') {
+            fetch(`${baseUrl}/${currentDeleted}`, options)
+                .then(res => {
+                    if (res.ok) {
+                        setTeams(teams.filter(t => t.id !== currentDeleted))
+                        setCurrentDeleted('')
+                    }
+                })
+        }
+
+        return () => {
+            ignore = true
+        }
+    }, [currentDeleted, teams]);
+
+
+    function handleDelete(e) {
+        e.preventDefault()
+
+        const { target } = e;
+        const { dataset } = target;
+        const { id:teamID } = dataset;
+
+        setCurrentDeleted(teamID)
+    }
+
+
 
     function industryColor(industry) {
         switch (industry) {
@@ -43,13 +87,13 @@ function Teams() {
 
         {isLoading ? (
             <div>Loading...</div>
-        ) : <Table title={'Team List'} columns={['#','Name', 'Industry']}>
+        ) : <Table columns={['#','Name', 'Industry']}>
             <>
                 {teams.map((team, i) => (
-                    <tr key={team.id}>
+                    <tr key={team.id} className={team.id === currentDeleted ? deletingClass : ''}>
                         <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                             <div className="text-sm leading-5 text-gray-900">
-                                <Link to={`${team.id}`}>{i+1}</Link>
+                                <Link to={team.id}>{i+1}</Link>
                             </div>
                         </td>
 
@@ -67,8 +111,8 @@ function Teams() {
 
 
                         <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
-                            <Link to={`${team.id}`} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
-                            <a href="google.com" className="text-red-600 hover:text-red-900">Delete</a>
+                            <Link to={team.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
+                            <button className="text-red-600 hover:text-red-900" data-id={team.id} onClick={handleDelete}>Delete</button>
                         </td>
                     </tr>
                 ))}
