@@ -96,7 +96,7 @@ export default function Create() {
 
             {errorMessage !== '' ?
                 (
-                    <div className="whitespace-pre-line">
+                    <div className="whitespace-pre-line mt-4">
                         <div role="alert">
                             <div className="bg-red-500 text-white font-bold rounded-t px-4 py-2">
                                 Some errors were found:
