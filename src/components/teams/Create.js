@@ -3,9 +3,9 @@ import { Select, Option } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import Form from "../common/form";
+import {baseUrl} from "../utils/utils";
 
-function CreateATeam () {
-
+export default function TeamsCreate () {
     const [selected, setSelected] = useState('health');
     const [sentForm, setSentForm] = useState(false);
     const [values, setValues] = React.useState({
@@ -22,7 +22,7 @@ function CreateATeam () {
                 industry: selected})
         };
         if (sentForm) {
-            fetch('http://localhost:3000/teams/create', requestOptions)
+            fetch(`${baseUrl('teams', 'create')}`, requestOptions)
             .then((response) => {
                 setSentForm(false)
                 return response.json()
@@ -47,8 +47,8 @@ function CreateATeam () {
 
     function handleSelectedChange (event) {
       setSelected(event);
-    };
-   
+    }
+
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -82,5 +82,3 @@ function CreateATeam () {
        </Form>
     );
 }
-  
-export default CreateATeam;

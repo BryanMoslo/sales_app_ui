@@ -1,14 +1,14 @@
 import Table from "../common/table";
 import {useState, useEffect} from "react";
 import List from "../common/list";
+import {baseUrl} from "../utils/utils";
 
 function ClientsList() {
-    const baseUrl = 'http://localhost:3000/clients/';
     const [clients, setClients] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${baseUrl}`)
+        fetch(`${baseUrl('clients')}`)
             .then(res => res.json())
             .then(({data}) => {
                 setIsLoading(false)
