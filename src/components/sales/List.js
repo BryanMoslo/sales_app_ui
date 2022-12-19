@@ -43,7 +43,7 @@ export default function SalesList() {
                     }
                 }))
                 setIsLoading(false)
-            })
+            }).catch(err => console.error(err))
         }
 
     }, [sales]);
