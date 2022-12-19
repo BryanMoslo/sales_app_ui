@@ -3,14 +3,16 @@ import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import ClientsList from "./components/clients/List";
 import Employees from "./components/employees/Employees";
-import Offers from "./components/offers/Offers";
-import Sales from "./components/sales/Sales";
+import OffersList from "./components/offers/List";
+import SalesList from "./components/sales/List";
 import Teams from "./components/teams/List";
 import TeamView from "./components/teams/Show";
-import CreateATeam from "./components/teams/Create";
+import TeamsCreate from "./components/teams/Create";
 import UIComponents from "./components/template/components";
 import Create from "./components/clients/Create";
+import OffersCreate from "./components/offers/Create";
 import List from "./components/common/list";
+import ClientView from "./components/clients/Show";
 
 const router = createBrowserRouter([
     {
@@ -32,11 +34,16 @@ const router = createBrowserRouter([
             },
             {
                 path: "offers",
-                element: <Offers />,
+                element: <OffersList />,
             },
             {
+                path: "offers/create",
+                element: <OffersCreate />,
+            },
+
+            {
                 path: "sales",
-                element: <Sales />,
+                element: <SalesList />,
             },
             {
                 path: "teams",
@@ -44,7 +51,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "teams/create",
-                element: <CreateATeam />,
+                element: <TeamsCreate />,
             },
             {
                 path: "components",
@@ -53,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: "teams/:teamId",
                 element: <TeamView />,
+            },
+            {
+                path: "clients/:clientId",
+                element: <ClientView />,
             },
         ]
     },
