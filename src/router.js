@@ -17,7 +17,6 @@ import SalesCreate from "./components/sales/Create";
 import EmployeeView from "./components/employees/Show";
 
 
-
 const router = createBrowserRouter([
     {
         path: "/",
