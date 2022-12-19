@@ -62,11 +62,11 @@ export default function OffersCreate() {
         }
     }, [sentForm]);
 
-    function handleSelectIndustryChange(e) {
-        setSelectedIndustry(e)
+    function handleSelectIndustryChange(value) {
+        setSelectedIndustry(value)
     }
-    function handleSelectClientChange(e) {
-        setSelectedClient(e)
+    function handleSelectClientChange(value) {
+        setSelectedClient(value)
     }
 
     function handleTextAreaChange(e) {
@@ -91,45 +91,45 @@ export default function OffersCreate() {
     return (
         <>
             <Form title="Create offer" onSubmit={handleSubmit}>
-            <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div>
-                    <label className="text-gray-700" htmlFor="client">Client</label>
-                    <div className="relative w-full mt-2 h-11">
-                        <Select
-                            name="client"
-                            value={''}
-                            variant="outlined"
-                            className="w-full p-2.5 py-2 h-11 text-gray-500 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-                            onChange={handleSelectClientChange}
-                            children={clientsOptions}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <label className="text-gray-700" htmlFor="industry" >Industry</label>
-                    <div className="relative w-full mt-2 h-11">
-                        <Select
-                            name="industry"
-                            value={selectedIndustry}
-                            variant="outlined"
-                            className="w-full p-2.5 py-2 h-11 text-gray-500 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-                            onChange={handleSelectIndustryChange}
-                        >
-                            <Option disabled>Select an industry</Option>
-                            <Option value="health" >Health</Option>
-                            <Option value="insurance" >Insurance</Option>
-                            <Option value="entertainment" >Entertainment</Option>
-                        </Select>
-                    </div>
-                </div>
-                <div>
-                    <label className="text-gray-700" htmlFor="description">Description</label>
+                <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                     <div>
-                        <textarea className="resize rounded-md w-full" name="description" value={textAreaValue} rows={3} onChange={handleTextAreaChange}/>
+                        <label className="text-gray-700" htmlFor="client">Client</label>
+                        <div className="relative w-full mt-2 h-11">
+                            <Select
+                                name="client"
+                                value={''}
+                                variant="outlined"
+                                className="w-full p-2.5 py-2 h-11 text-gray-500 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                                onChange={handleSelectClientChange}
+                                children={clientsOptions}
+                            />
+                        </div>
                     </div>
-                </div>
+                    <div>
+                        <label className="text-gray-700" htmlFor="industry" >Industry</label>
+                        <div className="relative w-full mt-2 h-11">
+                            <Select
+                                name="industry"
+                                value={selectedIndustry}
+                                variant="outlined"
+                                className="w-full p-2.5 py-2 h-11 text-gray-500 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                                onChange={handleSelectIndustryChange}
+                            >
+                                <Option disabled>Select an industry</Option>
+                                <Option value="health" >Health</Option>
+                                <Option value="insurance" >Insurance</Option>
+                                <Option value="entertainment" >Entertainment</Option>
+                            </Select>
+                        </div>
+                    </div>
+                    <div>
+                        <label className="text-gray-700" htmlFor="description">Description</label>
+                        <div>
+                            <textarea className="resize rounded-md w-full" name="description" value={textAreaValue} rows={3} onChange={handleTextAreaChange}/>
+                        </div>
+                    </div>
             </div>
-        </Form>
+            </Form>
             <FormError errorMessage={errorMessage} />
         </>
     )
