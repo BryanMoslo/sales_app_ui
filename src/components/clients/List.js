@@ -1,6 +1,7 @@
 import Table from "../common/table";
 import {useState, useEffect} from "react";
 import List from "../common/list";
+import {Link } from "react-router-dom";
 
 function ClientsList() {
     const baseUrl = 'http://localhost:3000/clients/';
@@ -25,7 +26,7 @@ function ClientsList() {
                     <tr key={client.id}>
                         <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                             <div className="text-sm leading-5 text-gray-900">
-                                {i+1}
+                                <Link to={client.id}>{i+1}</Link>
                             </div>
                         </td>
 
@@ -48,7 +49,7 @@ function ClientsList() {
                         </td>
 
                         <td className="px-6 py-4 font-medium leading-5 text-center border-b border-gray-200 whitespace-nowrap">
-                            <button className="text-indigo-600 hover:text-indigo-900 mr-2 text-sm">View</button>
+                            <Link to={client.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
                             <button className="text-red-600 hover:text-red-900 text-sm">Delete</button>
                         </td>
 
