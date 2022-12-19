@@ -11,7 +11,8 @@ import TeamsCreate from "./components/teams/Create";
 import UIComponents from "./components/template/components";
 import Create from "./components/clients/Create";
 import OffersCreate from "./components/offers/Create";
-
+import List from "./components/common/list";
+import ClientView from "./components/clients/Show";
 
 const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: "teams/:teamId",
                 element: <TeamView />,
+            },
+            {
+                path: "clients/:clientId",
+                element: <ClientView />,
             },
         ]
     },
