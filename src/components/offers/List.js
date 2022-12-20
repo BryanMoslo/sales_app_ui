@@ -7,8 +7,7 @@ import {useEffect, useState} from "react";
 export default function OffersList() {
     const [offers, setOffers] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    const currentDeleted = ''
+    const [currentDeleted, setCurrentDeleted] = useState('')
     const deletingClass = 'opacity-20'
 
     useEffect(() => {
@@ -37,6 +36,43 @@ export default function OffersList() {
         }
 
     }, [offers]);
+
+
+    useEffect(() => {
+        let ignore = false;
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        if (!ignore && currentDeleted !== '') {
+            fetch(`${baseUrl('offers', currentDeleted)}`, options)
+                .then(res => {
+                    if (res.ok) {
+                        setOffers(offers.filter(o => o.id !== currentDeleted))
+                        setCurrentDeleted('')
+                    }
+                })
+                .catch(err => console.error(err))
+        }
+
+        return () => {
+            ignore = true
+        }
+    }, [currentDeleted, offers]);
+
+    function handleDeleteOffers(e) {
+        e.preventDefault()
+
+        const { target } = e;
+        const { dataset } = target;
+        const { id:salesId } = dataset;
+
+        setCurrentDeleted(salesId)
+    }
 
     return (
         <List isLoading={isLoading} title="offer" linkTo="/offers/create">
@@ -71,7 +107,7 @@ export default function OffersList() {
 
                             <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
                                 <Link to={offer.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
-                                <button className="text-red-600 hover:text-red-900" data-id={offer.id}>Delete</button>
+                                <button className="text-red-600 hover:text-red-900" data-id={offer.id} onClick={handleDeleteOffers}>Delete</button>
                             </td>
                         </tr>
                     ))}
