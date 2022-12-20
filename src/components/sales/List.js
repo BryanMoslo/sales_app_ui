@@ -7,13 +7,10 @@ import {baseUrl} from "../utils/utils";
 
 
 export default function SalesList() {
-
     const [sales, setSales] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-
-    const currentDeleted = ''
-    const deletingClass = ''
-
+    const [currentDeleted, setCurrentDeleted] = useState('')
+    const deletingClass = 'opacity-20'
 
     useEffect(() => {
         fetch(`${baseUrl('sales')}`)
@@ -22,7 +19,6 @@ export default function SalesList() {
                 setSales([...sales, ...data])
             })
     }, []);
-
 
     useEffect(() => {
         if (sales.length > 0  && isLoading) {
@@ -48,6 +44,41 @@ export default function SalesList() {
 
     }, [sales]);
 
+    useEffect(() => {
+        let ignore = false;
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        if (!ignore && currentDeleted !== '') {
+            fetch(`${baseUrl('sales', currentDeleted)}`, options)
+                .then(res => {
+                    if (res.ok) {
+                        setSales(sales.filter(s => s.id !== currentDeleted))
+                        setCurrentDeleted('')
+                    }
+                })
+                .catch(err => console.error(err))
+        }
+
+        return () => {
+            ignore = true
+        }
+    }, [currentDeleted, sales]);
+
+    function handleDeleteSales(e) {
+        e.preventDefault()
+
+        const { target } = e;
+        const { dataset } = target;
+        const { id:salesId } = dataset;
+
+        setCurrentDeleted(salesId)
+    }
 
 
   return (
@@ -83,7 +114,7 @@ export default function SalesList() {
 
                           <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
                               <Link to={sale.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
-                              <button className="text-red-600 hover:text-red-900" data-id={sale.id}>Delete</button>
+                              <button className="text-red-600 hover:text-red-900" data-id={sale.id} onClick={handleDeleteSales}>Delete</button>
                           </td>
                       </tr>
                   ))}

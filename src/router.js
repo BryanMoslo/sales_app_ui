@@ -7,7 +7,7 @@ import OffersCreate from "./components/offers/Create";
 import OffersList from "./components/offers/List";
 import SalesList from "./components/sales/List";
 import Teams from "./components/teams/List";
-import TeamView from "./components/teams/Show";
+import TeamsShow from "./components/teams/Show";
 import TeamsCreate from "./components/teams/Create";
 import UIComponents from "./components/template/components";
 import Create from "./components/clients/Create";
@@ -15,6 +15,9 @@ import CreateEmployees from "./components/employees/Create";
 import ClientView from "./components/clients/Show";
 import SalesCreate from "./components/sales/Create";
 import EmployeeView from "./components/employees/Show";
+import SalesShow from "./components/sales/Show";
+import OffersShow from "./components/offers/Show";
+
 
 
 const router = createBrowserRouter([
@@ -44,8 +47,16 @@ const router = createBrowserRouter([
                 element: <OffersCreate />,
             },
             {
+                path: "offers/:offerId",
+                element: <OffersShow />,
+            },
+            {
                 path: "sales",
                 element: <SalesList />,
+            },
+            {
+                path: "sales/:saleId",
+                element: <SalesShow />,
             },
             {
                 path: "sales/create",
@@ -65,7 +76,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "teams/:teamId",
-                element: <TeamView />,
+                element: <TeamsShow />,
             },
             {
                 path: "employees/create",

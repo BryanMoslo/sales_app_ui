@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 
 
-function TeamView() {
+export default function TeamsShow() {
 
     const {teamId} = useParams()
     const [team, setTeam] = useState([]);
@@ -26,5 +26,3 @@ function TeamView() {
         </div>
     )
 }
-
-export default TeamView;
