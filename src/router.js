@@ -2,10 +2,9 @@ import {createBrowserRouter} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import ClientsList from "./components/clients/List";
-import Employees from "./components/employees/Employees";
 import OffersList from "./components/offers/List";
 import SalesList from "./components/sales/List";
-import Teams from "./components/teams/List";
+import TeamsList from "./components/teams/List";
 import TeamsShow from "./components/teams/Show";
 import TeamsCreate from "./components/teams/Create";
 import UIComponents from "./components/template/components";
@@ -15,6 +14,8 @@ import ClientView from "./components/clients/Show";
 import SalesCreate from "./components/sales/Create";
 import SalesShow from "./components/sales/Show";
 import OffersShow from "./components/offers/Show";
+import EmployeesList from "./components/employees/List";
+import EmployeesShow from "./components/employees/Show";
 
 
 const router = createBrowserRouter([
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "employees",
-                element: <Employees />,
+                element: <EmployeesList />,
+            },
+            {
+                path: "employees/:employeeId",
+                element: <EmployeesShow />,
             },
             {
                 path: "offers",
@@ -61,7 +66,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "teams",
-                element: <Teams />,
+                element: <TeamsList />,
             },
             {
                 path: "teams/create",
