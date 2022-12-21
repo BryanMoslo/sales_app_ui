@@ -14,6 +14,7 @@ import Create from "./components/clients/Create";
 import CreateEmployees from "./components/employees/Create";
 import ClientView from "./components/clients/Show";
 import SalesCreate from "./components/sales/Create";
+import EmployeeView from "./components/employees/Show";
 
 
 
@@ -75,9 +76,12 @@ const router = createBrowserRouter([
                 path: "clients/:clientId",
                 element: <ClientView />,
             },
+            {
+                path: "employees/:employeeId",
+                element: <EmployeeView />,
+            },
         ]
     },
 
 ]);
-
 export default router;
