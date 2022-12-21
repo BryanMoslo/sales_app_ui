@@ -21,7 +21,7 @@ function Employees() {
           fetch(`${baseUrl}teams`)
               .then(res => res.json())
               .then(({data}) => {
-                  setEmployee(employees.map(employee =>  {
+                setEmployee(employees.map(employee =>  {
                       const e = data.find(team => employee.team_id === team.id)
                       return {
                         ...employee,
