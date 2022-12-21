@@ -1,7 +1,6 @@
 import Form from "../common/form";
 import {useEffect, useState} from "react";
-import data from "bootstrap/js/src/dom/data";
-import {redirect, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import FormError from "../utils/formError";
 
 const baseUrl = `http://localhost:3000/clients`
