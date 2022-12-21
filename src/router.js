@@ -2,7 +2,7 @@ import {createBrowserRouter} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import ClientsList from "./components/clients/List";
-import Employees from "./components/employees/Employees";
+import Employees from "./components/employees/List";
 import OffersList from "./components/offers/List";
 import SalesList from "./components/sales/List";
 import Teams from "./components/teams/List";
