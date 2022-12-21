@@ -12,7 +12,11 @@ import TeamsCreate from "./components/teams/Create";
 import UIComponents from "./components/template/components";
 import Create from "./components/clients/Create";
 import CreateEmployees from "./components/employees/Create";
+import OffersCreate from "./components/offers/Create";
 import ClientView from "./components/clients/Show";
+import SalesCreate from "./components/sales/Create";
+
+
 
 const router = createBrowserRouter([
     {
@@ -40,10 +44,13 @@ const router = createBrowserRouter([
                 path: "offers/create",
                 element: <OffersCreate />,
             },
-
             {
                 path: "sales",
                 element: <SalesList />,
+            },
+            {
+                path: "sales/create",
+                element: <SalesCreate />,
             },
             {
                 path: "teams",
