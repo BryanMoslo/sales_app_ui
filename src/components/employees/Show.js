@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 
-function EmployeeView() {
+export default function EmployeesShow() {
 
     const baseUrl = 'http://localhost:3000/';
     const {employeeId} = useParams()
@@ -51,5 +51,3 @@ function EmployeeView() {
         </div>
     )
 }
-
-export default EmployeeView;

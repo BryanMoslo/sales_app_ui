@@ -9,15 +9,15 @@ import TeamsList from "./components/teams/List";
 import TeamsShow from "./components/teams/Show";
 import TeamsCreate from "./components/teams/Create";
 import UIComponents from "./components/template/components";
-import Create from "./components/clients/Create";
-import CreateEmployees from "./components/employees/Create";
-import ClientView from "./components/clients/Show";
+import ClientsCreate from "./components/clients/Create";
+import EmployeesCreate from "./components/employees/Create";
+import ClientsShow from "./components/clients/Show";
 import SalesCreate from "./components/sales/Create";
-import EmployeeView from "./components/employees/Show";
+import EmployeesShow from "./components/employees/Show";
 import SalesShow from "./components/sales/Show";
 import OffersShow from "./components/offers/Show";
 import EmployeesList from "./components/employees/List";
-import EmployeesShow from "./components/employees/Show";
+
 
 
 
@@ -33,7 +33,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "clients/create",
-                element: <Create />,
+                element: <ClientsCreate />,
+            },
+            {
+                path: "clients/:clientId",
+                element: <ClientsShow />,
             },
             {
                 path: "employees",
@@ -76,24 +80,20 @@ const router = createBrowserRouter([
                 element: <TeamsCreate />,
             },
             {
-                path: "components",
-                element: <UIComponents />,
-            },
-            {
                 path: "teams/:teamId",
                 element: <TeamsShow />,
             },
             {
                 path: "employees/create",
-                element: <CreateEmployees />,
-            },
-            {
-                path: "clients/:clientId",
-                element: <ClientView />,
+                element: <EmployeesCreate />,
             },
             {
                 path: "employees/:employeeId",
-                element: <EmployeeView />,
+                element: <EmployeesShow />,
+            },
+            {
+                path: "components",
+                element: <UIComponents />,
             },
         ]
     },

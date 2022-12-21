@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Form from "../common/form";
 import { Select, Option } from "@material-tailwind/react";
 
-function CreateEmployees () {
+export default function EmployeesCreate () {
 
     const baseUrl = 'http://localhost:3000/';
     const [teams, setTeams] = useState([]);
@@ -123,5 +123,3 @@ function CreateEmployees () {
        </Form>
     );
 }
-  
-export default CreateEmployees;
