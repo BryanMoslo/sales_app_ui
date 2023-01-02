@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 
 
-function ClientView() {
+export default function ClientsShow() {
 
     const {clientId} = useParams()
     const [client, setclient] = useState([]);
@@ -27,5 +27,3 @@ function ClientView() {
         </div>
     )
 }
-
-export default ClientView;

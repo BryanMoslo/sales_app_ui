@@ -1,24 +1,89 @@
 import Table from "../common/table";
 import {Link} from "react-router-dom";
 import List from "../common/list";
+import {useEffect, useState} from "react";
+import {baseUrl} from "../utils/utils";
 
 
 
 export default function SalesList() {
-    const sales = [
-        {id: 'w324'},
-        {id: 'd3234'},
-        {id: 'dq324'},
-    ]
+    const [sales, setSales] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentDeleted, setCurrentDeleted] = useState('')
+    const deletingClass = 'opacity-20'
 
-    const currentDeleted = ''
-    const deletingClass = ''
+    useEffect(() => {
+        fetch(`${baseUrl('sales')}`)
+            .then(res => res.json())
+            .then(({data}) => {
+                setSales([...sales, ...data])
+            })
+    }, []);
 
+    useEffect(() => {
+        if (sales.length > 0  && isLoading) {
+            Promise.all([
+                fetch(`${baseUrl('offers')}`).then(res => res.json()).then(({data}) => data),
+                fetch(`${baseUrl('teams')}`).then(res => res.json()).then(({data}) => data),
+            ]).then(res => {
+                const [fetchedOffers, fetchedTeams] = res
+
+                setSales(sales.map(sale =>  {
+                    const offer  = fetchedOffers.find(offer => offer.id === sale.offer_id)
+                    const team  = fetchedTeams.find(team => team.id === sale.team_id)
+
+                    return {
+                        ...sale,
+                        team: team.name,
+                        offer: offer.description,
+                    }
+                }))
+                setIsLoading(false)
+            }).catch(err => console.error(err))
+        }
+
+    }, [sales]);
+
+    useEffect(() => {
+        let ignore = false;
+
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        if (!ignore && currentDeleted !== '') {
+            fetch(`${baseUrl('sales', currentDeleted)}`, options)
+                .then(res => {
+                    if (res.ok) {
+                        setSales(sales.filter(s => s.id !== currentDeleted))
+                        setCurrentDeleted('')
+                    }
+                })
+                .catch(err => console.error(err))
+        }
+
+        return () => {
+            ignore = true
+        }
+    }, [currentDeleted, sales]);
+
+    function handleDeleteSales(e) {
+        e.preventDefault()
+
+        const { target } = e;
+        const { dataset } = target;
+        const { id:salesId } = dataset;
+
+        setCurrentDeleted(salesId)
+    }
 
 
   return (
-      <List isLoading={false} title="sales" linkTo="/sales/create">
-          <Table columns={['#','Offer', 'Team', 'Price']}>
+      <List isLoading={isLoading} title="sales" linkTo="/sales/create">
+          <Table columns={['#','Team', 'Offer', 'Price']}>
               <>
                   {sales.map((sale, i) => (
                       <tr key={sale.id} className={sale.id === currentDeleted ? deletingClass : ''}>
@@ -30,26 +95,26 @@ export default function SalesList() {
 
                           <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                               <div className="text-sm leading-5 text-gray-900">
-                                  {sale?.offer_id ? sale?.offer_id : '-'}
+                                  {sale?.team ? sale.team : '-'}
                               </div>
                           </td>
 
                           <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                               <div className="text-sm leading-5 text-gray-900">
-                                  {sale?.team_id ? sale?.team_id : '-'}
+                                  {sale?.offer ? sale.offer : '-'}
                               </div>
                           </td>
 
                           <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                               <div className="text-sm leading-5 text-gray-900">
-                                  {sale?.price ? sale?.price : '-'}
+                                  {sale?.price ? sale.price : '-'}
                               </div>
                           </td>
 
 
                           <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
                               <Link to={sale.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
-                              <button className="text-red-600 hover:text-red-900" data-id={sale.id}>Delete</button>
+                              <button className="text-red-600 hover:text-red-900" data-id={sale.id} onClick={handleDeleteSales}>Delete</button>
                           </td>
                       </tr>
                   ))}

@@ -2,19 +2,22 @@ import {createBrowserRouter} from "react-router-dom";
 import Root from "./routes/root";
 import ErrorPage from "./error-page";
 import ClientsList from "./components/clients/List";
-import Employees from "./components/employees/List";
 import OffersCreate from "./components/offers/Create";
 import OffersList from "./components/offers/List";
 import SalesList from "./components/sales/List";
-import Teams from "./components/teams/List";
-import TeamView from "./components/teams/Show";
+import TeamsList from "./components/teams/List";
+import TeamsShow from "./components/teams/Show";
 import TeamsCreate from "./components/teams/Create";
 import UIComponents from "./components/template/components";
-import Create from "./components/clients/Create";
-import CreateEmployees from "./components/employees/Create";
-import ClientView from "./components/clients/Show";
+import ClientsCreate from "./components/clients/Create";
+import EmployeesCreate from "./components/employees/Create";
+import ClientsShow from "./components/clients/Show";
 import SalesCreate from "./components/sales/Create";
-import EmployeeView from "./components/employees/Show";
+import EmployeesShow from "./components/employees/Show";
+import SalesShow from "./components/sales/Show";
+import OffersShow from "./components/offers/Show";
+import EmployeesList from "./components/employees/List";
+
 
 
 
@@ -30,11 +33,19 @@ const router = createBrowserRouter([
             },
             {
                 path: "clients/create",
-                element: <Create />,
+                element: <ClientsCreate />,
+            },
+            {
+                path: "clients/:clientId",
+                element: <ClientsShow />,
             },
             {
                 path: "employees",
-                element: <Employees />,
+                element: <EmployeesList />,
+            },
+            {
+                path: "employees/:employeeId",
+                element: <EmployeesShow />,
             },
             {
                 path: "offers",
@@ -45,8 +56,16 @@ const router = createBrowserRouter([
                 element: <OffersCreate />,
             },
             {
+                path: "offers/:offerId",
+                element: <OffersShow />,
+            },
+            {
                 path: "sales",
                 element: <SalesList />,
+            },
+            {
+                path: "sales/:saleId",
+                element: <SalesShow />,
             },
             {
                 path: "sales/create",
@@ -54,31 +73,27 @@ const router = createBrowserRouter([
             },
             {
                 path: "teams",
-                element: <Teams />,
+                element: <TeamsList />,
             },
             {
                 path: "teams/create",
                 element: <TeamsCreate />,
             },
             {
-                path: "components",
-                element: <UIComponents />,
-            },
-            {
                 path: "teams/:teamId",
-                element: <TeamView />,
+                element: <TeamsShow />,
             },
             {
                 path: "employees/create",
-                element: <CreateEmployees />,
-            },
-            {
-                path: "clients/:clientId",
-                element: <ClientView />,
+                element: <EmployeesCreate />,
             },
             {
                 path: "employees/:employeeId",
-                element: <EmployeeView />,
+                element: <EmployeesShow />,
+            },
+            {
+                path: "components",
+                element: <UIComponents />,
             },
         ]
     },

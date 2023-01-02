@@ -30,7 +30,7 @@ function ClientsList() {
         }
 
         if (!ignore && currentDeleted !== '') {
-            fetch(`${baseUrl}/${currentDeleted}`, options)
+            fetch(`${baseUrl('clients',currentDeleted)}`, options)
                 .then(res => {
                     if (res.ok) {
                         setClients(clients.filter(i => i.id !== currentDeleted))

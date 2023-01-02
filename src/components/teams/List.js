@@ -4,7 +4,7 @@ import {Link } from "react-router-dom";
 import List from "../common/list";
 import {industryColor} from "../utils/utils";
 
-function Teams() {
+export default function TeamsList() {
     const baseUrl = 'http://localhost:3000/teams/';
     const [teams, setTeams] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -96,5 +96,3 @@ function Teams() {
         </List>
   );
 }
-
-export default Teams;
