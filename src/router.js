@@ -25,6 +25,8 @@ import { loader as employeesLoader } from "./components/employees/List"
 import { action as clientDestroyer } from "./components/clients/Destroy"
 import { action as clientCreator } from "./components/clients/Create"
 import { action as teamDestroyer } from "./components/teams/Destroy"
+import { action as employeeDestroyer } from "./components/employees/Destroy"
+import { action as employeesCreator } from "./components/employees/Create"
 
 
 
@@ -69,6 +71,20 @@ const router = createBrowserRouter([
                     element: <EmployeesShow />,
                 },
                 {
+                    path: "employees/create",
+                    element: <EmployeesCreate />,
+                    loader: teamsLoader,
+                    action: employeesCreator
+                },
+                {
+                    path: "employees/:employeeId",
+                    element: <EmployeesShow />,
+                },
+                {
+                    path: "employees/:id/destroy",
+                    action: employeeDestroyer
+                },
+                {
                     path: "offers",
                     element: <OffersList />,
                 },
@@ -109,14 +125,6 @@ const router = createBrowserRouter([
                 {
                     path: "teams/:id/destroy",
                     action: teamDestroyer
-                },
-                {
-                    path: "employees/create",
-                    element: <EmployeesCreate />,
-                },
-                {
-                    path: "employees/:employeeId",
-                    element: <EmployeesShow />,
                 },
                 {
                     path: "components",

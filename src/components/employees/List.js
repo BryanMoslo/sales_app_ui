@@ -1,49 +1,37 @@
 import Table from "../common/table";
-import {useState, useEffect} from "react";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link, useFetcher, useLoaderData} from "react-router-dom";
 import List from "../common/list";
 import {baseUrl} from "../utils/utils";
-
 
 
 export async function loader() {
     const res =  await fetch(baseUrl('employees'))
 
-    const {data: employees} = await res.json()
+    const {data} = await res.json()
 
-    return employees
+
+    const teamsRes = await fetch(baseUrl('teams'))
+
+    const {data: teams} = await teamsRes.json()
+
+    return data.map(employee => {
+            const e = teams.find(team => employee.team_id === team.id)
+            return {
+                ...employee,
+                teamName: e.name
+            }
+        }
+    )
 }
 
 function Employees() {
-   const initialEmployees = useLoaderData()
-    const [employees, setEmployees] = useState(initialEmployees);
+    const employees = useLoaderData()
+    const fetcher = useFetcher()
+
 
     const capitalizeFirst = str => {
       return str.charAt(0).toUpperCase() + str.slice(1);
     };
-
-    useEffect(() => {
-        let ignore = false
-            fetch(baseUrl('teams'))
-                .then(res => res.json())
-                .then(({data}) => {
-                    if (!ignore) {
-                        setEmployees(emp => emp.map(employee =>  {
-                            const e = data.find(team => employee.team_id === team.id)
-                            return {
-                                ...employee,
-                                teamName: e.name
-                            }
-                        }))
-                    }
-
-                })
-
-
-        return () => {
-            ignore = true
-        }
-    }, []);
 
 
     return (
@@ -84,7 +72,9 @@ function Employees() {
                             </td>
                             <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
                                 <Link to={e.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
-                                <button className="text-red-600 hover:text-red-900 text-sm">Delete</button>
+                                <fetcher.Form method="delete" action={`${e?.id}/destroy`} className="inline-block">
+                                    <button className="text-red-600 hover:text-red-900 text-sm">Delete</button>
+                                </fetcher.Form>
                             </td>
                         </tr>
                     ))}

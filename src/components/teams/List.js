@@ -1,5 +1,4 @@
 import Table from "../common/table";
-import {useState} from "react";
 import {Link, useFetcher, useLoaderData} from "react-router-dom";
 import List from "../common/list";
 import {baseUrl, industryColor} from "../utils/utils";
