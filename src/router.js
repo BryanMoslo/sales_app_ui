@@ -18,12 +18,13 @@ import SalesShow from "./components/sales/Show";
 import OffersShow from "./components/offers/Show";
 import EmployeesList from "./components/employees/List";
 import MyComponents from "./components/common/my-components";
-import teamsLoader from "./components/teams/teams";
 import Index from "./routes";
+import { loader as teamsLoader} from "./components/teams/List";
 import { loader as clientsLoader } from "./components/clients/List"
 import { loader as employeesLoader } from "./components/employees/List"
 import { action as clientDestroyer } from "./components/clients/Destroy"
 import { action as clientCreator } from "./components/clients/Create"
+import { action as teamDestroyer } from "./components/teams/Destroy"
 
 
 
@@ -104,6 +105,10 @@ const router = createBrowserRouter([
                 {
                     path: "teams/:teamId",
                     element: <TeamsShow />,
+                },
+                {
+                    path: "teams/:id/destroy",
+                    action: teamDestroyer
                 },
                 {
                     path: "employees/create",

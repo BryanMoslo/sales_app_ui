@@ -1,45 +1,35 @@
 import Table from "../common/table";
 import {useState} from "react";
-import {Link, useLoaderData} from "react-router-dom";
+import {Link, useFetcher, useLoaderData} from "react-router-dom";
 import List from "../common/list";
 import {baseUrl, industryColor} from "../utils/utils";
 
-export default function TeamsList() {
-    const [currentDeleted, setCurrentDeleted] = useState('')
-    const initialTeams = useLoaderData()
-    const [teams, setTeams] = useState(initialTeams);
-    const deletingClass = 'opacity-20'
 
-    function handleDelete(e) {
-        e.preventDefault()
 
-        const { target } = e;
-        const { dataset } = target;
-        const { id:teamID } = dataset;
+export async function loader() {
+    const response = await fetch(baseUrl('teams'))
 
-        const options = {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json'
-            }
-        }
-
-        fetch(baseUrl(`teams/${teamID}`), options)
-            .then(res => {
-                if (res.ok) {
-                    setTeams(teams.filter(t => t.id !== teamID))
-                    setCurrentDeleted('')
-                }
-            })
-            .catch(err => console.error(err))
+    if (response.status === 404) {
+        throw new Response('This page does not exists', {status: 404})
     }
+
+    const json = await response.json()
+
+
+    return json.data
+}
+
+export default function TeamsList() {
+    const teams = useLoaderData()
+    const fetcher = useFetcher()
+
 
     return (
         <List title="Team" linkTo="/teams/create">
             <Table columns={['#','Name', 'Industry']}>
                 <>
                     {teams.map((team, i) => (
-                        <tr key={team.id} className={team.id === currentDeleted ? deletingClass : ''}>
+                        <tr key={team.id}>
                             <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                                 <div className="text-sm leading-5 text-gray-900">
                                     <Link to={team.id}>{i+1}</Link>
@@ -61,7 +51,9 @@ export default function TeamsList() {
 
                             <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
                                 <Link to={team.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
-                                <button className="text-red-600 hover:text-red-900" data-id={team.id} onClick={handleDelete}>Delete</button>
+                                <fetcher.Form method="delete" action={`${team.id}/destroy`} className="inline-block">
+                                    <button className="text-red-600 hover:text-red-900">Delete</button>
+                                </fetcher.Form>
                             </td>
                         </tr>
                     ))}
