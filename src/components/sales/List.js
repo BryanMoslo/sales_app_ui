@@ -1,92 +1,49 @@
 import Table from "../common/table";
-import {Link} from "react-router-dom";
+import {Link, useFetcher, useLoaderData} from "react-router-dom";
 import List from "../common/list";
 import {useEffect, useState} from "react";
 import {baseUrl} from "../utils/utils";
 
 
 
+export async function loader() {
+    const res = await  fetch(baseUrl('sales'))
+
+    if (!res.ok) throw res
+
+    const {data: sales} = await res.json()
+
+    const offersTeamsRes =  await Promise.all([
+        fetch(`${baseUrl('offers')}`).then(res => res.json()).then(({data}) => data),
+        fetch(`${baseUrl('teams')}`).then(res => res.json()).then(({data}) => data),
+    ])
+
+    const [fetchedOffers, fetchedTeams] = offersTeamsRes
+
+
+    return sales.map(sale =>  {
+        const offer  = fetchedOffers.find(offer => offer.id === sale.offer_id)
+        const team  = fetchedTeams.find(team => team.id === sale.team_id)
+
+        return {
+            ...sale,
+            team: team?.name,
+            offer: offer?.description,
+        }
+    })
+}
+
+
 export default function SalesList() {
-    const [sales, setSales] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [currentDeleted, setCurrentDeleted] = useState('')
-    const deletingClass = 'opacity-20'
-
-    useEffect(() => {
-        fetch(`${baseUrl('sales')}`)
-            .then(res => res.json())
-            .then(({data}) => {
-                setSales([...sales, ...data])
-            })
-    }, []);
-
-    useEffect(() => {
-        if (sales.length > 0  && isLoading) {
-            Promise.all([
-                fetch(`${baseUrl('offers')}`).then(res => res.json()).then(({data}) => data),
-                fetch(`${baseUrl('teams')}`).then(res => res.json()).then(({data}) => data),
-            ]).then(res => {
-                const [fetchedOffers, fetchedTeams] = res
-
-                setSales(sales.map(sale =>  {
-                    const offer  = fetchedOffers.find(offer => offer.id === sale.offer_id)
-                    const team  = fetchedTeams.find(team => team.id === sale.team_id)
-
-                    return {
-                        ...sale,
-                        team: team.name,
-                        offer: offer.description,
-                    }
-                }))
-                setIsLoading(false)
-            }).catch(err => console.error(err))
-        }
-
-    }, [sales]);
-
-    useEffect(() => {
-        let ignore = false;
-
-        const options = {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json'
-            }
-        }
-
-        if (!ignore && currentDeleted !== '') {
-            fetch(`${baseUrl('sales', currentDeleted)}`, options)
-                .then(res => {
-                    if (res.ok) {
-                        setSales(sales.filter(s => s.id !== currentDeleted))
-                        setCurrentDeleted('')
-                    }
-                })
-                .catch(err => console.error(err))
-        }
-
-        return () => {
-            ignore = true
-        }
-    }, [currentDeleted, sales]);
-
-    function handleDeleteSales(e) {
-        e.preventDefault()
-
-        const { target } = e;
-        const { dataset } = target;
-        const { id:salesId } = dataset;
-
-        setCurrentDeleted(salesId)
-    }
-
+    const sales = useLoaderData()
+    const fetcher = useFetcher()
 
   return (
-      <List isLoading={isLoading} title="sales" linkTo="/sales/create">
+      <List title="sales" linkTo="/sales/create">
           <Table columns={['#','Team', 'Offer', 'Price']}>
               <>
                   {sales.map((sale, i) => (
-                      <tr key={sale.id} className={sale.id === currentDeleted ? deletingClass : ''}>
+                      <tr key={sale.id}>
                           <td className="px-6 py-4 border-b border-gray-200 whitespace-nowrap">
                               <div className="text-sm leading-5 text-gray-900">
                                   <Link to={sale.id}>{i+1}</Link>
@@ -113,8 +70,10 @@ export default function SalesList() {
 
 
                           <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
-                              <Link to={sale.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
-                              <button className="text-red-600 hover:text-red-900" data-id={sale.id} onClick={handleDeleteSales}>Delete</button>
+                              <Link to={sale?.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
+                              <fetcher.Form method="delete" action={`${sale?.id}/destroy`} className="inline-block">
+                                  <button className="text-red-600 hover:text-red-900">Delete</button>
+                              </fetcher.Form>
                           </td>
                       </tr>
                   ))}

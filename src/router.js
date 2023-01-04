@@ -23,6 +23,7 @@ import { loader as teamsLoader} from "./components/teams/List";
 import { loader as clientsLoader } from "./components/clients/List"
 import { loader as employeesLoader } from "./components/employees/List"
 import { loader as offersLoader } from "./components/offers/List"
+import { loader as salesLoader } from "./components/sales/List"
 import { action as clientsDestroyer } from "./components/clients/Destroy"
 import { action as clientsCreator } from "./components/clients/Create"
 import { action as teamsDestroyer } from "./components/teams/Destroy"
@@ -30,6 +31,9 @@ import { action as employeesDestroyer } from "./components/employees/Destroy"
 import { action as employeesCreator } from "./components/employees/Create"
 import { action as offersDestroyer } from "./components/offers/Destroy"
 import { action as offersCreator } from "./components/offers/Create"
+import { action as salesDestroyer } from "./components/sales/Destroy"
+import { action as salesCreator } from "./components/sales/Create"
+import { loader as offersTeamsLoader } from "./components/sales/Create"
 
 
 
@@ -109,14 +113,21 @@ const router = createBrowserRouter([
                 {
                     path: "sales",
                     element: <SalesList />,
+                    loader: salesLoader
                 },
                 {
                     path: "sales/:saleId",
                     element: <SalesShow />,
                 },
                 {
+                    path: "sales/:id/destroy",
+                    action: salesDestroyer
+                },
+                {
                     path: "sales/create",
                     element: <SalesCreate />,
+                    action: salesCreator,
+                    loader: offersTeamsLoader
                 },
                 {
                     path: "teams",
