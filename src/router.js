@@ -22,11 +22,14 @@ import Index from "./routes";
 import { loader as teamsLoader} from "./components/teams/List";
 import { loader as clientsLoader } from "./components/clients/List"
 import { loader as employeesLoader } from "./components/employees/List"
-import { action as clientDestroyer } from "./components/clients/Destroy"
-import { action as clientCreator } from "./components/clients/Create"
-import { action as teamDestroyer } from "./components/teams/Destroy"
-import { action as employeeDestroyer } from "./components/employees/Destroy"
+import { loader as offersLoader } from "./components/offers/List"
+import { action as clientsDestroyer } from "./components/clients/Destroy"
+import { action as clientsCreator } from "./components/clients/Create"
+import { action as teamsDestroyer } from "./components/teams/Destroy"
+import { action as employeesDestroyer } from "./components/employees/Destroy"
 import { action as employeesCreator } from "./components/employees/Create"
+import { action as offersDestroyer } from "./components/offers/Destroy"
+import { action as offersCreator } from "./components/offers/Create"
 
 
 
@@ -50,12 +53,12 @@ const router = createBrowserRouter([
                 },
                 {
                     path: "clients/:id/destroy",
-                    action: clientDestroyer
+                    action: clientsDestroyer
                 },
                 {
                     path: "clients/create",
                     element: <ClientsCreate />,
-                    action: clientCreator
+                    action: clientsCreator
                 },
                 {
                     path: "clients/:clientId",
@@ -82,19 +85,26 @@ const router = createBrowserRouter([
                 },
                 {
                     path: "employees/:id/destroy",
-                    action: employeeDestroyer
+                    action: employeesDestroyer
                 },
                 {
                     path: "offers",
                     element: <OffersList />,
+                    loader: offersLoader
                 },
                 {
                     path: "offers/create",
                     element: <OffersCreate />,
+                    loader: clientsLoader,
+                    action: offersCreator
                 },
                 {
                     path: "offers/:offerId",
                     element: <OffersShow />,
+                },
+                {
+                    path: "offers/:id/destroy",
+                    action: offersDestroyer
                 },
                 {
                     path: "sales",
@@ -124,7 +134,7 @@ const router = createBrowserRouter([
                 },
                 {
                     path: "teams/:id/destroy",
-                    action: teamDestroyer
+                    action: teamsDestroyer
                 },
                 {
                     path: "components",
