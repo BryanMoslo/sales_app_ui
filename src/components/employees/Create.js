@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import {useLoaderData, useNavigate} from 'react-router-dom';
 import Form from "../common/form";
 import { Select, Option } from "@material-tailwind/react";
+import {baseUrl} from "../utils/utils";
 
 export default function EmployeesCreate () {
-
-    const baseUrl = 'http://localhost:3000/';
     const [teams, setTeams] = useState([]);
     const [sentForm, setSentForm] = useState(false);
     const navigate = useNavigate();
@@ -16,11 +15,11 @@ export default function EmployeesCreate () {
     const [employee, setEmployee] = useState(initialForm)
 
     useEffect(() => {
-        fetch(`${baseUrl}teams`)
+        fetch(baseUrl('teams'))
             .then(res => res.json())
             .then(({data}) => {
                 setIsLoading(false)
-                setTeams([...teams, ...data])
+                setTeams([...data])
             })
     }, []);
 

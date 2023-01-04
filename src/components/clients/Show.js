@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import {Card} from "../common/my-components";
 
 
 export default function ClientsShow() {
@@ -15,15 +16,11 @@ export default function ClientsShow() {
         })
     },[]);
 
-    return (
-        <div> 
-            <h3 className="text-3xl font-medium text-gray-700">Clients</h3>
-            <div className="mt-8">
-                <h4 className="text-gray-600">Member</h4>
-                <p>Name: {client.name}</p>
-                <p>Phone Number: {client.phone_number}</p>
-                <p>REP: {client.rep}</p>
-            </div>            
-        </div>
-    )
+    const c = {
+        name: client.name,
+        'phone number': client.phone_number,
+        rep: client.rep
+    }
+
+    return <Card item={c} title={'Client'} />
 }

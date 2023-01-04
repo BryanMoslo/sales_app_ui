@@ -1,54 +1,14 @@
 import Table from "../common/table";
-import {useState, useEffect} from "react";
-import {Link } from "react-router-dom";
+import {useState} from "react";
+import {Link, useLoaderData} from "react-router-dom";
 import List from "../common/list";
-import {industryColor} from "../utils/utils";
+import {baseUrl, industryColor} from "../utils/utils";
 
 export default function TeamsList() {
-    const baseUrl = 'http://localhost:3000/teams/';
-    const [teams, setTeams] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
     const [currentDeleted, setCurrentDeleted] = useState('')
-
+    const initialTeams = useLoaderData()
+    const [teams, setTeams] = useState(initialTeams);
     const deletingClass = 'opacity-20'
-
-    useEffect(() => {
-        fetch(`${baseUrl}`)
-            .then(res => res.json())
-            .then(({data}) => {
-                setIsLoading(false)
-                setTeams([...teams, ...data])
-            })
-    }, []);
-
-
-
-   useEffect(() => {
-        let ignore = false;
-
-        const options = {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json'
-            }
-        }
-
-        if (!ignore && currentDeleted !== '') {
-            fetch(`${baseUrl}/${currentDeleted}`, options)
-                .then(res => {
-                    if (res.ok) {
-                        setTeams(teams.filter(t => t.id !== currentDeleted))
-                        setCurrentDeleted('')
-                    }
-                })
-                .catch(err => console.error(err))
-        }
-
-        return () => {
-            ignore = true
-        }
-    }, [currentDeleted, teams]);
-
 
     function handleDelete(e) {
         e.preventDefault()
@@ -57,11 +17,25 @@ export default function TeamsList() {
         const { dataset } = target;
         const { id:teamID } = dataset;
 
-        setCurrentDeleted(teamID)
+        const options = {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }
+
+        fetch(baseUrl(`teams/${teamID}`), options)
+            .then(res => {
+                if (res.ok) {
+                    setTeams(teams.filter(t => t.id !== teamID))
+                    setCurrentDeleted('')
+                }
+            })
+            .catch(err => console.error(err))
     }
 
     return (
-        <List isLoading={isLoading} title="Team" linkTo="/teams/create">
+        <List title="Team" linkTo="/teams/create">
             <Table columns={['#','Name', 'Industry']}>
                 <>
                     {teams.map((team, i) => (

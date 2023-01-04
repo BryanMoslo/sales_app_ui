@@ -1,55 +1,39 @@
 import Form from "../common/form";
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useState } from "react";
+import { redirect } from "react-router-dom";
 import FormError from "../utils/formError";
+import { baseUrl } from "../utils/utils";
 
-const baseUrl = `http://localhost:3000/clients`
+
+export async function action({ request }) {
+    const formData = await request.formData()
+    const clientSubmitted = Object.fromEntries(formData)
+
+    const client = {
+        ...clientSubmitted,
+        phone_number: clientSubmitted.phone.replaceAll('-', '')
+    }
+
+    delete client.phone
+
+    const options = {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(client)
+    };
+
+    const res = await fetch(baseUrl('clients/create'), options)
+
+    if (!res.ok) throw res
+
+   return redirect('/clients')
+}
+
 
 
 export default function Create() {
     const initialForm = {name: '', phone: '', rep: ''}
     const [client, setClient] = useState(initialForm)
-    const [isSubmitted, setIsSubmitted] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
-    const navigate = useNavigate()
-
-
-    useEffect(() => {
-        if(isSubmitted) {
-            const sanitizedNumber = client.phone.replaceAll('-', '')
-
-            const options = {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: client.name,
-                    phone_number: sanitizedNumber,
-                    rep: client.rep
-                })
-            };
-
-            fetch(`${baseUrl}/create`, options)
-                .then(res => {
-                    setIsSubmitted(false)
-
-                    if (res.ok) {
-                        navigate('/clients')
-                    }
-
-                    return res.json()
-                })
-                .then(res => {
-                    const {status, message} = res
-
-                    if (status === 422) {
-                        setErrorMessage(message)
-                    }
-                })
-                .catch(err => console.error(err))
-        }
-
-
-    }, [isSubmitted]);
     
 
     function handleInputChange(e) {
@@ -58,17 +42,10 @@ export default function Create() {
         setClient({...client, [name]: value})
     }
 
-    function handleSubmit(e) {
-        e.preventDefault()
-
-        setIsSubmitted(true)
-    }
-
-
     return (
 
         <>
-            <Form title="Create a client" onSubmit={handleSubmit} >
+            <Form title="Create a client">
                 <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                     <div>
                         <label className="text-gray-700" htmlFor="name">Name</label>
@@ -92,7 +69,7 @@ export default function Create() {
                     </div>
                 </div>
             </Form>
-            <FormError errorMessage={errorMessage} />
+            <FormError errorMessage={''} />
         </>
     )
 }
