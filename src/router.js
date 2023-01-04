@@ -17,25 +17,33 @@ import EmployeesShow from "./components/employees/Show";
 import SalesShow from "./components/sales/Show";
 import OffersShow from "./components/offers/Show";
 import EmployeesList from "./components/employees/List";
-import MyComponents from "./components/common/my-components";
+import Card from "./components/common/card";
 import Index from "./routes";
-import { loader as teamsLoader} from "./components/teams/List";
+
 import { loader as clientsLoader } from "./components/clients/List"
-import { loader as employeesLoader } from "./components/employees/List"
-import { loader as offersLoader } from "./components/offers/List"
-import { loader as salesLoader } from "./components/sales/List"
+import { loader as clientsShowLoader } from "./components/clients/Show"
 import { action as clientsDestroyer } from "./components/clients/Destroy"
 import { action as clientsCreator } from "./components/clients/Create"
+
+import { loader as teamsLoader} from "./components/teams/List";
+import { loader as teamsShowLoader} from "./components/teams/Show";
+import { action as teamsCreator} from "./components/teams/Create";
 import { action as teamsDestroyer } from "./components/teams/Destroy"
+
+import { loader as employeesLoader } from "./components/employees/List"
+import { loader as employeesShowLoader } from "./components/employees/Show"
 import { action as employeesDestroyer } from "./components/employees/Destroy"
 import { action as employeesCreator } from "./components/employees/Create"
+
+import { loader as offersLoader } from "./components/offers/List"
+import { loader as offersShowLoader } from "./components/offers/Show"
+import { loader as offersTeamsLoader } from "./components/sales/Create"
 import { action as offersDestroyer } from "./components/offers/Destroy"
 import { action as offersCreator } from "./components/offers/Create"
+
+import { loader as salesLoader } from "./components/sales/List"
 import { action as salesDestroyer } from "./components/sales/Destroy"
 import { action as salesCreator } from "./components/sales/Create"
-import { loader as offersTeamsLoader } from "./components/sales/Create"
-
-
 
 
 const router = createBrowserRouter([
@@ -65,8 +73,9 @@ const router = createBrowserRouter([
                     action: clientsCreator
                 },
                 {
-                    path: "clients/:clientId",
+                    path: "clients/:id",
                     element: <ClientsShow />,
+                    loader: clientsShowLoader
                 },
                 {
                     path: "employees",
@@ -74,8 +83,9 @@ const router = createBrowserRouter([
                     loader: employeesLoader
                 },
                 {
-                    path: "employees/:employeeId",
+                    path: "employees/:id",
                     element: <EmployeesShow />,
+                    loader: employeesShowLoader
                 },
                 {
                     path: "employees/create",
@@ -103,8 +113,9 @@ const router = createBrowserRouter([
                     action: offersCreator
                 },
                 {
-                    path: "offers/:offerId",
+                    path: "offers/:id",
                     element: <OffersShow />,
+                    loader: offersShowLoader
                 },
                 {
                     path: "offers/:id/destroy",
@@ -138,10 +149,12 @@ const router = createBrowserRouter([
                 {
                     path: "teams/create",
                     element: <TeamsCreate />,
+                    action: teamsCreator
                 },
                 {
-                    path: "teams/:teamId",
+                    path: "teams/:id",
                     element: <TeamsShow />,
+                    loader: teamsShowLoader
                 },
                 {
                     path: "teams/:id/destroy",
@@ -153,7 +166,7 @@ const router = createBrowserRouter([
                 },
                 {
                     path: "my-components",
-                    element: <MyComponents />
+                    element: <Card />
                 }
             ]
         }]

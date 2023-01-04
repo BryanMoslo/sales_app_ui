@@ -1,53 +1,42 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import {baseUrl, capitalizeFirst} from "../utils/utils";
+import {useLoaderData} from "react-router-dom";
+import Card from "../common/card";
+
+
+export async function loader({ params }) {
+    const res =  await fetch(baseUrl(`employees/${params.id}`))
+
+    if (!res.ok) throw res
+
+    const { data } = await res.json()
+
+    const [ employee ] = data
+
+    const teamsRes = await  fetch(baseUrl('teams'))
+
+    if (!teamsRes.ok) throw teamsRes
+
+    const {data: teams} = await teamsRes.json()
+
+    const team = teams.find(({ id }) => id === employee.team_id);
+
+    return {
+        ...employee,
+        teamName: team.name
+    }
+}
 
 export default function EmployeesShow() {
+    const employee = useLoaderData()
 
-    const baseUrl = 'http://localhost:3000/';
-    const {employeeId} = useParams()
-    const [employee, setEmployee] = useState(null);
-    const [isLoading, setIsLoading] = useState(true)
-    
-    
+    const e  = {
+        id: employee?.id,
+        'First Name': employee?.first_name,
+        'Last Name': employee?.last_name,
+        'Team Name': employee?.teamName ? employee?.teamName : '-',
+        role: employee?.role ? capitalizeFirst(employee?.role) : '-',
+        rate: employee?.rate
+    }
 
-    useEffect(() => {
-        fetch(`${baseUrl}employees/${employeeId}`)
-        .then(res => res.json())
-        .then(({data}) => {
-            setEmployee(data[0])
-        })
-    },[]);
-
-    useEffect(() => {
-        if(employee?.id && isLoading){
-            fetch(`${baseUrl}teams`)
-            .then(res => res.json())
-            .then(({data}) => {
-                const team = data.find(({ id }) => id === employee.team_id);
-                setEmployee({
-                    ...employee,
-                    teamName: team.name
-                })
-                setIsLoading(false)
-            })
-        }
-    }, [employee]);
-
-    const capitalizeFirst = str => {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    };
-
-    return (
-        <div> 
-            <h3 className="text-3xl font-medium text-gray-700">Employees</h3>
-            <div className="mt-8">
-                <h4 className="text-gray-600">Employee</h4>
-                <p>First Name: {employee?.first_name}</p>
-                <p>Last Name: {employee?.last_name}</p>
-                <p>Team Name: {employee?.teamName ? employee?.teamName : '-'}</p>
-                <p>Role: {employee?.role ? capitalizeFirst(employee?.role) : '-'}</p>  
-                <p>Rate: {employee?.rate}</p>
-            </div>            
-        </div>
-    )
+    return <Card item={e} title={'Employee'} />
 }

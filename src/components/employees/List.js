@@ -1,7 +1,7 @@
 import Table from "../common/table";
 import {Link, useFetcher, useLoaderData} from "react-router-dom";
 import List from "../common/list";
-import {baseUrl} from "../utils/utils";
+import {baseUrl, capitalizeFirst} from "../utils/utils";
 
 
 export async function loader() {
@@ -27,11 +27,6 @@ export async function loader() {
 function Employees() {
     const employees = useLoaderData()
     const fetcher = useFetcher()
-
-
-    const capitalizeFirst = str => {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    };
 
 
     return (

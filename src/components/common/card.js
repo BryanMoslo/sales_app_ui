@@ -1,10 +1,13 @@
+import {capitalizeFirst} from "../utils/utils";
 
 
-export function Card({item = {}, title = ''}) {
+export default function Card({item = {}, title = ''}) {
     let items = []
 
     for (const key in item) {
-        items.push(<div>{key}: {item[key]}</div>)
+         if (key === 'id' || key === 'created_at' || key === 'updated_at')  continue
+
+        items.push(<div key={key}>{capitalizeFirst(key)}: {item[key]}</div>)
     }
     
     return (
@@ -16,19 +19,5 @@ export function Card({item = {}, title = ''}) {
                 }
             </div>
         </div>
-    )
-}
-
-
-
-
-
-
-
-export default function MyComponents() {
-    return (
-        <>
-            <Card item={{name: 'something', industry: 'insurance'}} />
-        </>
     )
 }
