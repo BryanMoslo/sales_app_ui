@@ -42,6 +42,7 @@ import { action as offersDestroyer } from "./components/offers/Destroy"
 import { action as offersCreator } from "./components/offers/Create"
 
 import { loader as salesLoader } from "./components/sales/List"
+import { loader as salesShowLoader } from "./components/sales/Show"
 import { action as salesDestroyer } from "./components/sales/Destroy"
 import { action as salesCreator } from "./components/sales/Create"
 
@@ -127,8 +128,10 @@ const router = createBrowserRouter([
                     loader: salesLoader
                 },
                 {
-                    path: "sales/:saleId",
+                    path: "sales/:id",
                     element: <SalesShow />,
+                    loader: salesShowLoader
+
                 },
                 {
                     path: "sales/:id/destroy",
