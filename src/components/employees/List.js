@@ -1,81 +1,33 @@
 import Table from "../common/table";
-import {useState, useEffect} from "react";
-import {Link } from "react-router-dom";
+import {Link, useFetcher, useLoaderData} from "react-router-dom";
 import List from "../common/list";
+import {baseUrl, capitalizeFirst} from "../utils/utils";
 
-function Employees() {
-    const baseUrl = 'http://localhost:3000/';
-    const [employees, setEmployees] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [currentDeleted, setCurrentDeleted] = useState('');
 
-    useEffect(() => {
-        fetch(`${baseUrl}employees`)
-            .then(res => res.json())
-            .then(({data}) => {
-              setEmployees([...employees, ...data])
-            })
-    }, []);
+export async function loader() {
+    const res =  await fetch(baseUrl('employees'))
 
-    useEffect(() => {
-      if (employees.length > 0 && isLoading) {
-          fetch(`${baseUrl}teams`)
-              .then(res => res.json())
-              .then(({data}) => {
-                setEmployees(employees.map(employee =>  {
-                      const e = data.find(team => employee.team_id === team.id)
-                      return {
-                        ...employee,
-                        teamName: e.name
-                      }
-                  }))
-                  setIsLoading(false)
-              })
-      }
+    const {data} = await res.json()
 
-    }, [employees]);
 
-    const capitalizeFirst = str => {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    };
+    const teamsRes = await fetch(baseUrl('teams'))
 
-    useEffect(() => {
-        let ignore = false;
+    const {data: teams} = await teamsRes.json()
 
-        const options = {
-            method: 'DELETE',
-            headers: {
-                'Content-type': 'application/json'
+    return data.map(employee => {
+            const e = teams.find(team => employee.team_id === team.id)
+            return {
+                ...employee,
+                teamName: e.name
             }
         }
+    )
+}
 
-        if (!ignore && currentDeleted !== '') {
-            fetch(`${baseUrl}employees/${currentDeleted}`, options)
-                .then(res => {
-                    if (res.ok) {
-                        setEmployees(employees.filter(i => i.id !== currentDeleted))
-                        setCurrentDeleted('')
-                    }
-                })
-                .catch(err => console.error(err))
-        }
+function Employees() {
+    const employees = useLoaderData()
+    const fetcher = useFetcher()
 
-        return () => {
-            ignore = true
-        }
-
-    }, [currentDeleted, employees]);
-
-
-    function handleDelete(e) {
-        e.preventDefault()
-
-        const { target } = e;
-        const { dataset } = target;
-        const { id:employeeID } = dataset;
-
-        setCurrentDeleted(employeeID)
-    }
 
     return (
         <List title="Employees" linkTo="/employees/create">
@@ -115,7 +67,9 @@ function Employees() {
                             </td>
                             <td className="px-6 py-4 text-sm font-medium leading-5 text-right border-b border-gray-200 whitespace-nowrap">
                                 <Link to={e.id} className="text-indigo-600 hover:text-indigo-900 mr-2">View</Link>
-                                <button className="text-red-600 hover:text-red-900 text-sm" data-id={e?.id} onClick={handleDelete}>Delete</button>
+                                <fetcher.Form method="delete" action={`${e?.id}/destroy`} className="inline-block">
+                                    <button className="text-red-600 hover:text-red-900 text-sm">Delete</button>
+                                </fetcher.Form>
                             </td>
                         </tr>
                     ))}

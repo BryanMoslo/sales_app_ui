@@ -1,80 +1,45 @@
 import Form from "../common/form";
 import {Option, Select} from "@material-tailwind/react";
 import FormError from "../utils/formError";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {baseUrl} from "../utils/utils";
-import {useNavigate} from "react-router-dom";
-import {type} from "@testing-library/user-event/dist/type";
+import {redirect, useLoaderData} from "react-router-dom";
+
+
+export async function action({ request }) {
+    const formData = await request.formData()
+
+    const sale = Object.fromEntries(formData)
+
+    sale.price = Number(sale.price)
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sale)
+    }
+
+    const res =  await fetch(baseUrl('sales', 'create'), requestOptions)
+
+    if (!res.ok) throw res
+
+
+    return redirect('/sales')
+}
+
+
+export async function loader() {
+    return await Promise.all([
+       fetch(`${baseUrl('offers')}`).then(res => res.json()).then(({data}) => data),
+       fetch(`${baseUrl('teams')}`).then(res => res.json()).then(({data}) => data),
+   ])
+}
 
 export default function SalesCreate() {
-    const [teams, setTeams] = useState([])
-    const [offers, setOffers] = useState([])
+    const [offers, teams] = useLoaderData()
     const [selectedTeam, setSelectedTeam] = useState('');
     const [selectedOffer, setSelectedOffer] = useState('');
     const [price, setPrice] = useState(0);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [sentForm, setSentForm] = useState(false)
-    const [isLoading, setIsLoading] = useState(true)
-    const navigate = useNavigate()
-
-    useEffect(() => {
-        fetch(`${baseUrl('teams')}`)
-            .then(res => res.json())
-            .then(({data}) => {
-                setTeams([...teams, ...data])
-            })
-    }, []);
-
-    useEffect(() => {
-        fetch(`${baseUrl('offers')}`)
-            .then(res => res.json())
-            .then(({data}) => {
-                setIsLoading(false)
-                setOffers([...offers, ...data])
-            })
-    }, []);
-
-    useEffect(() => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                team_id: selectedTeam,
-                offer_id: selectedOffer,
-                price: price
-            })
-        }
-
-        if (sentForm) {
-            fetch(`${baseUrl('sales', 'create')}`, requestOptions)
-                .then((res) => {
-                    setSentForm(false)
-
-                    if (res.ok) {
-                        navigate('/sales')
-                    }
-
-                    return res.json()
-                })
-                .then(res => {
-                    const {status, message} = res
-
-                    if (status !== 201) {
-                        setErrorMessage(message ?? res)
-                    }
-                })
-                .catch(err => {
-                    setErrorMessage(err)
-                });
-        }
-    }, [sentForm]);
-
-
-    function handleSubmit(e) {
-        e.preventDefault()
-
-        setSentForm(true)
-    }
 
     function handleSelectTeamChange(value) {
         setSelectedTeam(value)
@@ -92,18 +57,18 @@ export default function SalesCreate() {
 
 
     const teamsOptions = [
-        <Option key={'ssd324543'} disabled >{isLoading ? 'loading teams...' : 'Select a team'}</Option>,
+        <Option key={'ssd324543'} disabled >{'Select a team'}</Option>,
         ...teams.map(({id, name}) => <Option key={id} value={id}>{name}</Option>)
     ]
 
     const offersOptions = [
-        <Option key={'ssd324543'} disabled >{isLoading ? 'loading offers...' : 'Select an offer'}</Option>,
+        <Option key={'ssd324543'} disabled >{'Select an offer'}</Option>,
         ...offers.map(({id, description}) => <Option key={id} value={id}>{description}</Option>)
     ]
 
     return (
         <>
-            <Form title="Create offer" onSubmit={handleSubmit}>
+            <Form title="Create offer">
                 <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                     <div>
                         <label className="text-gray-700" htmlFor="team">Teams</label>
@@ -116,6 +81,7 @@ export default function SalesCreate() {
                                 onChange={handleSelectTeamChange}
                                 children={teamsOptions}
                             />
+                            <input type="hidden" value={selectedTeam} name="team_id"/>
                         </div>
                     </div>
                     <div>
@@ -129,6 +95,7 @@ export default function SalesCreate() {
                                 onChange={handleSelectOfferChange}
                                 children={offersOptions}
                             />
+                            <input type="hidden" value={selectedOffer} name="offer_id"/>
                         </div>
                     </div>
                     <div>
@@ -139,7 +106,7 @@ export default function SalesCreate() {
                     </div>
                 </div>
             </Form>
-            <FormError errorMessage={errorMessage} />
+            <FormError errorMessage={''} />
         </>
     )
 }

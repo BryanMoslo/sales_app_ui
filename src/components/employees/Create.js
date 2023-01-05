@@ -1,54 +1,40 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import {redirect, useLoaderData, useNavigate} from 'react-router-dom';
 import Form from "../common/form";
 import { Select, Option } from "@material-tailwind/react";
+import {baseUrl} from "../utils/utils";
+
+
+
+export async function action({ request }) {
+    const formData = await request.formData()
+
+    const employee = Object.fromEntries(formData)
+
+    employee.rate = parseInt(employee.rate)
+
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(employee)
+    };
+
+    console.log(requestOptions)
+
+    const res = await fetch(baseUrl('employees/create'), requestOptions)
+
+    if (!res.ok) throw res
+
+    return redirect('/employees')
+
+}
 
 export default function EmployeesCreate () {
-
-    const baseUrl = 'http://localhost:3000/';
-    const [teams, setTeams] = useState([]);
-    const [sentForm, setSentForm] = useState(false);
-    const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(true);
+    const teams = useLoaderData()
+    const initialForm = {team: '', first_name: '', last_name: '', role: '', rate: 0}
     const [selectedTeam, setSelectedTeam] = useState('');
     const [selectedRole, setSelectedRole] = useState('');
-    const initialForm = {team: '', first_name: '', last_name: '', role: '', rate: 0}
     const [employee, setEmployee] = useState(initialForm)
-
-    useEffect(() => {
-        fetch(`${baseUrl}teams`)
-            .then(res => res.json())
-            .then(({data}) => {
-                setIsLoading(false)
-                setTeams([...teams, ...data])
-            })
-    }, []);
-
-    useEffect(() => {
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                team_id: selectedTeam,
-                first_name: employee.first_name, 
-                last_name: employee.last_name, 
-                role: selectedRole, 
-                rate: parseInt(employee.rate)
-            })
-        };
-        if (sentForm) {
-            fetch(`${baseUrl}employees/create`, requestOptions)
-            .then((res) => {
-                setSentForm(false)
-                console.log(res.json())
-                if (res.ok) {
-                    navigate('/employees')
-                }
-                return res.json()
-            })
-            .catch(err => { console.log(err)}); 
-        }
-    }, [sentForm]);
 
     function handleInputChange(e) {
         const { target } = e
@@ -56,17 +42,12 @@ export default function EmployeesCreate () {
         setEmployee({...employee, [name]: value})
     }   
 
-    function handleSubmit(event) {
-        event.preventDefault();
-        setSentForm(!sentForm);
-    }
-
     function handleSelectTeamChange(e) {
         setSelectedTeam(e)
     }
 
     const teamsOptions = [
-        <Option key={'ssd324543'} disabled >{isLoading ? 'Loading Teams...' : 'Select a Team'}</Option>,
+        <Option key={'ssd324543'} disabled >{'Select a Team'}</Option>,
         ...teams.map(({id, name}) => <Option key={id} value={id}>{name}</Option>)
     ]
     
@@ -76,18 +57,21 @@ export default function EmployeesCreate () {
 
     return (
 
-       <Form title="Create a Employee" onSubmit={handleSubmit}>
+       <Form title="Create a Employee">
             <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
                 <div>
                     <label className="text-gray-700" htmlFor="name">Team ID</label>
-                    <Select
-                        name="team"
-                        value={''}
-                        variant="outlined"
-                        className="w-full p-2.5 py-2 h-11 text-gray-500 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
-                        onChange={handleSelectTeamChange}
-                        children={teamsOptions}
-                    />
+                    <div className="relative w-full mt-2 h-11">
+                        <Select
+                            name="team"
+                            value={''}
+                            variant="outlined"
+                            className="w-full p-2.5 py-2 h-11 text-gray-500 border-gray-200 rounded-md focus:border-indigo-600 focus:ring focus:ring-opacity-40 focus:ring-indigo-500"
+                            onChange={handleSelectTeamChange}
+                            children={teamsOptions}
+                        />
+                        <input type="hidden" name="team_id" value={selectedTeam}/>
+                    </div>
                 </div>
                 <div>
                     <label className="text-gray-700" htmlFor="name">First Name</label>
@@ -113,6 +97,7 @@ export default function EmployeesCreate () {
                             <Option value="legal">Legal</Option>
                             <Option value="leader">Leader</Option>
                         </Select>
+                        <input type="hidden" name="role" value={selectedRole}/>
                     </div>
                 </div>
                 <div>

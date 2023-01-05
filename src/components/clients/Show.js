@@ -1,29 +1,30 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router";
+import Card from "../common/card";
+import {baseUrl} from "../utils/utils";
+import {useLoaderData} from "react-router-dom";
 
+
+export async function loader({ params }) {
+    const res = await fetch(baseUrl(`clients/${params.id}`))
+
+    if (!res.ok) throw res
+
+    const { data } = await res.json()
+
+    const [ client ] = data
+
+
+    return client
+}
 
 export default function ClientsShow() {
+    const client = useLoaderData()
 
-    const {clientId} = useParams()
-    const [client, setclient] = useState([]);
+    const c = {
+        id: client.id,
+        name: client.name,
+        'phone number': client.phone_number,
+        rep: client.rep
+    }
 
-    useEffect(() => {
-        fetch(`http://localhost:3000/clients/${clientId}`)
-        .then(res => res.json())
-        .then(({data}) => {
-            setclient(data[0])
-        })
-    },[]);
-
-    return (
-        <div> 
-            <h3 className="text-3xl font-medium text-gray-700">Clients</h3>
-            <div className="mt-8">
-                <h4 className="text-gray-600">Member</h4>
-                <p>Name: {client.name}</p>
-                <p>Phone Number: {client.phone_number}</p>
-                <p>REP: {client.rep}</p>
-            </div>            
-        </div>
-    )
+    return <Card item={c} title={'Client'} />
 }

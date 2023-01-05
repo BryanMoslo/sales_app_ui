@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import pluralize from "pluralize";
 
-export default function List({title, linkTo, isLoading, children}) {
+export default function List({title, linkTo, children}) {
     let capitalizedTitle = title
     capitalizedTitle = `${capitalizedTitle.charAt(0).toUpperCase()}${capitalizedTitle.slice(1)}`
 
@@ -18,9 +18,7 @@ export default function List({title, linkTo, isLoading, children}) {
             </div>
 
 
-            {isLoading ? (
-                <div>Loading...</div>
-            ) : children}
+            {children}
         </div>
     )
 }
